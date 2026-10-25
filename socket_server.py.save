@@ -1,0 +1,67 @@
+import socket
+
+HOST = '' #Listens to all interfaces
+PORT = 13254 # Port (Must be above 1024)
+
+
+
+
+#Creates socket
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+	s.bind((HOST, PORT)) #Binds socket to specific  IP
+	s.listen() #Tells the socket to listen for connections
+	print(f"Listening on port {PORT}...")
+
+
+	conn, addr = s.accept() #waits until client connects to socket
+
+# conn = a new socket
+# addr = client IP address and port
+
+
+
+	with conn:
+
+		print(f"Connected by {addr}")
+#		file_obj = conn.makefile('r')#		for line in file_obj:
+			message = line.strip()
+			print(f"Received: {message}")
+			if message.lower() == 'exit':
+				break
+			elif message.lower() == 'hello':
+				print("hey there!")
+			elif message.lower() == 'voice':
+				import voice_rec.py
+				recognize_voice()
+
+			else: 
+				print("unknown")
+			response = f"Echo: {message}\n"
+			conn.sendall(response.encode())
+
+"""
+		while True:
+			data = conn.recv(1024) # Receives Data
+			if not data:
+				break
+
+
+			input = input("Type message and press enter:")
+			print(f"Received: {input}")
+
+
+			# Respond to Input
+			if input == 'r':
+				response = 'got r!'
+			elif input == 'q': 
+				response = 'got q!'
+			elif input.lower() == 'hello':
+				response = 'hey there!'
+
+			else:
+				response = 'unknown'
+
+			print(f"{response}")
+
+			conn.sendall(response.encode()) #Echo Back
+"""
